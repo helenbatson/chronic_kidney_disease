@@ -33,31 +33,31 @@ The data has been prepared into train and test files and a machine learning pipe
 
 The columns and their descriptions are as follows:
 
-age - age: Age(numerical) - in years
-bp - blood pressure: Blood Pressure(numerical) - in mm/Hg
-sg - specific gravity Specific Gravity(nominal) - (1.005,1.010,1.015,1.020,1.025)
-al - albumin Albumin(nominal) - (0,1,2,3,4,5)
-su - sugar Sugar(nominal) - (0,1,2,3,4,5)
-rbc - red blood cells Red Blood Cells(nominal) - (normal,abnormal)
-pc - pus cell Pus Cell (nominal) - (normal,abnormal)
-pcc - pus cell clumps Pus Cell clumps(nominal) - (present,notpresent)
-ba - bacteria Bacteria(nominal) - (present,notpresent)
-bgr - blood glucose random Blood Glucose Random(numerical) - in mgs/dl
-bu - blood urea Blood Urea(numerical) - in mgs/dl
-sc - serum creatinine Serum Creatinine(numerical) - in mgs/dl
-sod - sodium Sodium(numerical) - in mEq/L
-pot - potassium Potassium(numerical) - in mEq/L
-hemo - hemoglobin Hemoglobin(numerical) - in gms
-pcv - packed cell volume Packed Cell Volume(numerical)
-wc - white blood cell count White Blood Cell Count(numerical) - in cells/cumm
-rc - red blood cell count Red Blood Cell Count(numerical) - in millions/cmm
-htn - hypertension Hypertension(nominal) - (yes,no)
-dm - diabetes mellitus Diabetes Mellitus(nominal) - (yes,no)
-cad - coronary artery disease Coronary Artery Disease(nominal) - (yes,no)
-appet - appetite Appetite(nominal) - (good,poor)
-pe - pedal edema Pedal Edema(nominal) - (yes,no)
-ane - anemia Anemia(nominal) - (yes,no)
-Our target: class - Class (nominal)- class - (ckd,notckd)
+1. age - age: Age(numerical) - in years
+1. bp - blood pressure: Blood Pressure(numerical) - in mm/Hg
+1. sg - specific gravity Specific Gravity(nominal) - (1.005,1.010,1.015,1.020,1.025)
+1. al - albumin Albumin(nominal) - (0,1,2,3,4,5)
+1. su - sugar Sugar(nominal) - (0,1,2,3,4,5)
+1. rbc - red blood cells Red Blood Cells(nominal) - (normal,abnormal)
+1. pc - pus cell Pus Cell (nominal) - (normal,abnormal)
+1. pcc - pus cell clumps Pus Cell clumps(nominal) - (present,notpresent)
+1. ba - bacteria Bacteria(nominal) - (present,notpresent)
+1. bgr - blood glucose random Blood Glucose Random(numerical) - in mgs/dl
+1. bu - blood urea Blood Urea(numerical) - in mgs/dl
+1. sc - serum creatinine Serum Creatinine(numerical) - in mgs/dl
+1. sod - sodium Sodium(numerical) - in mEq/L
+1. pot - potassium Potassium(numerical) - in mEq/L
+1. hemo - hemoglobin Hemoglobin(numerical) - in gms
+1. pcv - packed cell volume Packed Cell Volume(numerical)
+1. wc - white blood cell count White Blood Cell Count(numerical) - in cells/cumm
+1. rc - red blood cell count Red Blood Cell Count(numerical) - in millions/cmm
+1. htn - hypertension Hypertension(nominal) - (yes,no)
+1. dm - diabetes mellitus Diabetes Mellitus(nominal) - (yes,no)
+1. cad - coronary artery disease Coronary Artery Disease(nominal) - (yes,no)
+1. appet - appetite Appetite(nominal) - (good,poor)
+1. pe - pedal edema Pedal Edema(nominal) - (yes,no)
+1. ane - anemia Anemia(nominal) - (yes,no)
+1. Our target: class - Class (nominal)- class - (ckd,notckd)
 
 <a name="questions"></a>
 ## 3. Questions
