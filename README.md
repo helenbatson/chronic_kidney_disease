@@ -9,8 +9,7 @@ Table of Contents
 5. [ Conclusion. ](#conclusion)
 6. [ Implementation. ](#implem)
 7. [ Instructions. ](#instruct)
-8. [ Conclusion. ](#conclusion)
-9. [ Licensing, Authors, Acknowledgements. ](#ack)
+8. [ Licensing, Authors, Acknowledgements. ](#ack)
 
 
 Using a chronic kidney disease dataset from [Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease, predictions have been made on patients' kidney data to determine whether there are any clear indications of chronic kidney disease.
@@ -66,6 +65,8 @@ Which is the best model to use and why?
 <a name="findings"></a>
 ## 4. Findings
 ### Analysis
+
+#### Important Features
 The heatmap below shows the relationships between features and the target ('classification').
 The features 'packed cell volume' and 'hemoglobin' mostly correlate with each other, and the feature 'serum creatine' most positively correlates with having chronic kidney disease.
 
@@ -85,11 +86,23 @@ This makes sense as healthy kidneys are known to filter creatinine and other was
 
 ----
 
+A ranking of the models applied to the data according to the scores they produced.
+From the below table, we can see that Decision Tree and Random Forest classfiers have the highest accuracy score.
+
+Among these two, the Random Forest classifier is a better choice as it has the ability to limit overfitting when compared to the Decision Tree classifier.
+
+![Model Scores](model_scores.png)
+
+----
+Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier. It's confusion matrix is shown below.
+
  ![Confusion matrix](confusion_matrix.png)
 
 ### Building the models
 
 A few models were tried to check for the best model to predict chronic kidney disease.
+They successfully made predictions.
+
 - Logistic Regression
 - Support Vector Machines
 - Linear SVC
@@ -98,81 +111,8 @@ A few models were tried to check for the best model to predict chronic kidney di
 - Naive Bayes
 
 
-
-### What happened after adding these features?
-Accuracy is low after applying a random forest classifier to the data. An SGD classifier was also used, but since the train-test split produced some labels with just zeros there was no way of moving forward with this model.
-Other classifers which support multi-labels will be tried in future versions of the app.
-
-* sklearn.tree.DecisionTreeClassifier
-* sklearn.tree.ExtraTreeClassifier
-* sklearn.ensemble.ExtraTreesClassifier
-* sklearn.neighbors.KNeighborsClassifier
-* sklearn.neural_network.MLPClassifier
-* sklearn.neighbors.RadiusNeighborsClassifier
-* sklearn.ensemble.RandomForestClassifier
-* sklearn.linear_model.RidgeClassifierCV
-
 <a name="conclusion"></a>
 ## 5. Conclusion
-
-Can we predict chronic kidney disease from the features in the dataset?
-Which features are key to the predictions?
-Which is the best model to use and why?
-
-
-Accuracy is .... after applying a combination of parameters using a pipeline.
-By adding in more features, and doing hyperparameter tuning, the accuracy ....
-
-This may be expected due to the number of rows versus variables, though other classifiers are worth trying to increase the current accuracy.
-
-
-------------------------------------------------------------------------------------------------------------------
-
-<a name="implem"></a>
-## 6. Implementation
-### Technical Information
-
-##### Pip Install
-1. sklearn
-1. nltk
-1. plotly
-1. flask
-1. joblib
-
-##### Libraries:
-1. sys
-1. re
-1. numpy
-1. pandas
-1. pickle
-1. sqlalchemy
-1. nltk
-1. sklearn
-1. plotly
-1. flask
-1. joblib
-1. json
-1. sqlalchemy
-1. sqlite3
-
-
-### File Descriptions
-1. CKD Prediction.ipynb: Jupyter notebook with a step-by-step analysis of kidney data to predict chronic kidney disease.
-1. kidney_disease_train.csv: messages created by thepublic in the native language, converted into english.
-1. kidney_disease_test.csv: categories into which messages fall; water, medical, etc.
-1. kidney_failure.jpg: a drawing of a funtioning kidney and a failed kidney.
-
-
-<a name="instruct"></a>
-## 7. Instructions:
-
-### How To Interact With The Project
-Install Jupyter notebook and open the .ipynb file to run the cells within it.
-
-
-<a name="conclusion"></a>
-## 8. Conclusion
-
 Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier.
 The feature most correlated to this prediction is serum creatinine, which makes sense as healthy kidneys are known to filter creatinine and other waste products from our blood.
 
@@ -184,9 +124,34 @@ Removing the outliers needed some reflection as a few variables were categorical
 #### Improvements
 There was not much open data found for kidney disease, but if it was found in abundance then the chosen model may change due to considerations of performance time, and more parameters would be tested to ensure the performance was optimal.
 
+------------------------------------------------------------------------------------------------------------------
+
+<a name="implem"></a>
+## 6. Implementation
+### Technical Information
+##### Libraries:
+1. numpy
+1. pandas
+1. matplotlib
+1. seaborn
+1. sklearn
+
+
+### File Descriptions
+1. CKD Prediction.ipynb: Jupyter notebook with a step-by-step analysis of kidney data to predict chronic kidney disease.
+1. kidney_disease_train.csv: messages created by thepublic in the native language, converted into english.
+1. kidney_disease_test.csv: categories into which messages fall; water, medical, etc.
+1. kidney_failure.jpg: a drawing of a funtioning kidney and a failed kidney.
+
+
+<a name="instruct"></a>
+## 7. Instructions:
+### How To Interact With The Project
+Install Jupyter notebook and open the .ipynb file to run the cells within it.
+
 
 <a name="ack"></a>
-## 9. Licensing, Authors, Acknowledgements
+## 8. Licensing, Authors, Acknowledgements
 
 The data files were retrieved from[Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease, via https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease.
 
