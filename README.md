@@ -65,6 +65,9 @@ The columns and their descriptions are as follows:
 <a name="findings"></a>
 ## 4. Findings
 ### Analysis
+There is a step-by-step guide to the results below in the Jupyter notebook. Please take a look.
+The feature engineering involved coercing columns to numerical format and removing outliers from columns which were not categorical. Removing categorical outliers meant a lost of vital details in the blood data, such as the level of blood sugar (0-5). 
+
 
 #### Important Features
 The heatmap below shows the relationships between features and the target ('classification').
