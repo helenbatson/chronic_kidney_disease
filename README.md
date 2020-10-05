@@ -2,31 +2,33 @@
 Classification of chronic kidney disease
 
 Table of Contents
-1. [ Introduction. ](#intro)
-2. [ The Data. ](#data)
-3. [ Questions. ](#questions)
-4. [ Findings. ](#findings)
-5. [ Conclusion. ](#conclusion)
-6. [ Implementation. ](#implem)
-7. [ Instructions. ](#instruct)
+1. [ Project Overview. ](#intro)
+2. [ Problem Statement. ](#data)
+   [ Questions. ](#questions)
+3. [ Metrics. ](#metrics)
+4. [ Data Exploration and visualization. ](#viz)
+5. [ Methodology. ](#methodology)
+6. [ Results. ](#results)
+7. [ Conclusion. ](#conclusion)
 8. [ Licensing, Authors, Acknowledgements. ](#ack)
 
 
-Using a chronic kidney disease dataset from [Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease, predictions have been made on patients' kidney data to determine whether there are any clear indications of chronic kidney disease.
+This article is for my Udacity Data Science Nanodegree capstone project and uses a dataset on chronic kidney disease from [Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease. Predictions have been made on patients' kidney data to determine whether there are any clear indications of chronic kidney disease.
 
-![Credit: favpng.com](kidney_failure.png)
+![A picture depiction of kidney disease. Credit: favpng.com](kidney_failure.png)
 
 <a name="intro"></a>
-## 1. Introduction
+## 1. Project Overview
 A few years ago during pregnancy I was placed in the high risk group due to raised blood pressure (gestational hypertension). Ten days after birth my blood pressure rose even higher and it was determined to be preeclampsia; pronounced [pree·uh·klamp·see·uh]. Left untreated preeclampsia can lead to organ failure; in particular to the liver and kidneys.
 
-This data science project will be to investigate kidney data to predict whether a patient has chronic kidney disease. The expectation is that the results of this project could be used to benefit people who have had their blood taken in hospital; features of their blood could be used in a model to identify chronic kidney disease which may not have been previously picked up. If I knew my equivalent data I could predict my likelihood of having this disease since having preeclampsia.
+This data science project will be to investigate kidney data (described in the Kaggle link above) to predict whether or not a patient has chronic kidney disease. The expectation is that the results of this project could be used to benefit people who have had their blood taken in hospital; features of their blood could be used in a model to identify chronic kidney disease which may not have been previously picked up. If I knew my equivalent data I could predict my likelihood of having this disease since having preeclampsia.
 
-A few models will be tried, starting with logistic regression since it is used to explain the relationship between one dependent binary variable (disease present or not) and one or more nominal, ordinal, interval or ratio-level independent variables. The metrics used to measure the performance of the models will be predictions on the test data, score/classification accuracy, and a confusion matrix.
+A few models will be tried, starting with logistic regression since it is used to explain the relationship between one dependent binary variable (disease present or not) and one or more nominal, ordinal, interval or ratio-level independent variables. The metrics used to measure the performance of the models will be predictions on the test data, score/classification accuracy, and confusion matrices.
+
 
 <a name="data"></a>
-## 2. The Data
-The data has been prepared into train and test files and a set of data models have been used in the predictions.
+## 2. Problem Statement
+The data has been prepared into train and test files and a set of data models have been used in the predictions after a series of feature engineering steps.
 
 The columns and their descriptions are as follows:
 
@@ -57,19 +59,26 @@ The columns and their descriptions are as follows:
 1. Our target: class - Class (nominal)- class - (ckd,notckd)
 
 <a name="questions"></a>
-## 3. Questions
+## Questions to be answered
 1. Can we predict chronic kidney disease from the features in the dataset?
 1. Which features are key to the predictions?
 1. Which is the best model to use and why?
 
-<a name="findings"></a>
-## 4. Findings
-### Analysis
-There is a step-by-step guide to the results below in the Jupyter notebook. Please take a look.
-The feature engineering involved coercing columns to numerical format and removing outliers from columns which were not categorical. Removing categorical outliers meant a lost of vital details in the blood data, such as the level of blood sugar (0-5). 
+<a name="metrics"></a>
+## 3. Metrics.
+### How To Interact With The Project
+Install Jupyter notebook and open the .ipynb file to run the cells within it.
+After feature engineering the following models were applied and the resulting accuracy/scores and confusion matrices calculated.
 
+<a name="viz"></a>
+## 4. Data Exploration and visualization.
 
-#### Important Features
+### File Descriptions
+1. CKD Prediction.ipynb: Jupyter notebook with a step-by-step analysis of kidney data to predict chronic kidney disease.
+1. kidney_disease_train.csv: messages created by thepublic in the native language, converted into english.
+1. kidney_disease_test.csv: categories into which messages fall; water, medical, etc.
+1. kidney_failure.jpg: a drawing of a funtioning kidney and a failed kidney.
+
 The heatmap below shows the relationships between features and the target ('classification').
 The features 'packed cell volume' and 'hemoglobin' mostly correlate with each other, and the feature 'serum creatine' most positively correlates with having chronic kidney disease.
 
@@ -89,22 +98,9 @@ This makes sense as healthy kidneys are known to filter creatinine and other was
 
 ----
 
-A ranking of the models applied to the data according to the scores they produced.
-From the below table, we can see that Decision Tree and Random Forest classfiers have the highest accuracy score.
-
-Among these two, the Random Forest classifier is a better choice as it has the ability to limit overfitting when compared to the Decision Tree classifier.
-
-![Model Scores](model_scores.png)
-
-----
-Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier. It's confusion matrix is shown below.
-
- ![Confusion matrix](confusion_matrix.png)
-
 ### Building the models
 
 A few models were tried to check for the best model to predict chronic kidney disease.
-They successfully made predictions.
 
 - Logistic Regression
 - Support Vector Machines
@@ -113,7 +109,7 @@ They successfully made predictions.
 - Random Forest
 - Naive Bayes
 
-The best of the six were coded as:
+They successfully made predictions. The best of the six were coded as:
 ```
 clf = RandomForestClassifier(n_estimators=100)
 clf.fit(X_train, y_train)
@@ -129,9 +125,95 @@ acc_decision_tree = round(clf.score(X_train, y_train) * 100, 2)
 print (acc_decision_tree)
 ```
 
+A table ranking the models applied to the data according to the scores they produced.
+We can see that Decision Tree and Random Forest classfiers have the highest accuracy score. This similarity makes sense as random forests are an example of an ensemble learner built on decision trees.
+
+Among these two, the Random Forest classifier is a better choice as it has the ability to limit overfitting when compared to the Decision Tree classifier.
+
+![Model Scores](model_scores.png)
+
+----
+Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier. It's confusion matrix is shown below.
+
+![Confusion matrix](confusion_matrix.png)
+
+
+<a name="methodology"></a>
+## 5. Methodology
+### Data Preprocessing
+1.Check whether the target data is balanced
+i.e. Does the patient have chronic kidney disease or not?
+Initially the target data is skewed toward having chronic kidney disease, 174:106, so some steps were taken to balance it.
+1. Fill Yes/No columns with boolean values.
+1. Imputing data: Fill the null values with the median value of each column. We didn't want to lose features like red_blood_cells which was missing 107 out of 280 values, and since the object-type columns were filled with boolean values, the median of each feature column was used instead of the mean.
+1. Remove outliers from non-categorical columns: An assumption of binary logistic regression is there should be no outliers in the data so they were identified using the Tukey rule.
+
+```
+The Tukey rule finds outliers in one-dimension. The steps are:
+
+* Find the first quartile (ie .25 quantile)
+* Find the third quartile (ie .75 quantile)
+* Calculate the inter-quartile range (Q3 - Q1)
+* Any value that is greater than Q3 + 1.5 * IQR is an outlier
+* Any value that is less than Qe - 1.5 * IQR is an outlier
+```
+
+1. Using a dataframe with the outliers removed, apply logistic regression and check for class balancing again so there is no chance of one classification being chosen over the other. This time the classes were balanced slightly in favour of not having chronic kidney disease: 79:74
+
+
+### Implementation
+
+##### Libraries:
+1. numpy
+1. pandas
+1. matplotlib
+1. seaborn
+1. sklearn
+Each model was coded in a similar way; keeping them simple was the main idea to keep the running time down.
+
+These were the best performing models:
+```
+clf = RandomForestClassifier(n_estimators=100)
+clf.fit(X_train, y_train)
+y_pred_random_forest = clf.predict(X_test)
+acc_random_forest = round(clf.score(X_train, y_train) * 100, 2)
+print (acc_random_forest)
+```
+```
+clf = DecisionTreeClassifier()
+clf.fit(X_train, y_train)
+y_pred_decision_tree = clf.predict(X_test)
+acc_decision_tree = round(clf.score(X_train, y_train) * 100, 2)
+print (acc_decision_tree)
+```
+
+### Refinement
+THe logistic regression model was refined to max_iter=5000 due to convergence issues using the default of 1000. At 5000 iterations the score got to 98.69.
+
+```
+clf = LogisticRegression(max_iter=5000)
+clf.fit(X_train, y_train)
+y_pred_log_reg = clf.predict(X_test)
+acc_log_reg = round( clf.score(X_train, y_train) * 100, 2)
+print (str(acc_log_reg) + ' percent')
+```
+
+The Linear SVM model was also refined from max_iter=1000, though convergence was not achieved even at max_iter=400000. The score reached 85.62 but this was the most time intensive of all models at 4.0s.
+
+```
+clf = LinearSVC(max_iter=400000)
+clf.fit(X_train, y_train)
+y_pred_linear_svc = clf.predict(X_test)
+acc_linear_svc = round(clf.score(X_train, y_train) * 100, 2)
+print (acc_linear_svc)
+```
+
+<a name="results"></a>
+## 6. Results
+
 
 <a name="conclusion"></a>
-## 5. Conclusion
+## 7. Conclusion
 Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier.
 The feature most correlated to this prediction is serum creatinine, which makes sense as healthy kidneys are known to filter creatinine and other waste products from our blood.
 
@@ -145,32 +227,8 @@ There was not much open data found for kidney disease, but if it was found in ab
 
 ------------------------------------------------------------------------------------------------------------------
 
-<a name="implem"></a>
-## 6. Implementation
-### Technical Information
-##### Libraries:
-1. numpy
-1. pandas
-1. matplotlib
-1. seaborn
-1. sklearn
-
-
-### File Descriptions
-1. CKD Prediction.ipynb: Jupyter notebook with a step-by-step analysis of kidney data to predict chronic kidney disease.
-1. kidney_disease_train.csv: messages created by thepublic in the native language, converted into english.
-1. kidney_disease_test.csv: categories into which messages fall; water, medical, etc.
-1. kidney_failure.jpg: a drawing of a funtioning kidney and a failed kidney.
-
-
-<a name="instruct"></a>
-## 7. Instructions:
-### How To Interact With The Project
-Install Jupyter notebook and open the .ipynb file to run the cells within it.
-
-
 <a name="ack"></a>
-## 8. Licensing, Authors, Acknowledgements
+## 7. Licensing, Authors, Acknowledgements
 
 The data files were retrieved from[Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease, via https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease.
 
