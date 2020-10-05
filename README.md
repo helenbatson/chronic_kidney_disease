@@ -4,7 +4,6 @@ Classification of chronic kidney disease
 Table of Contents
 1. [ Project Overview. ](#intro)
 2. [ Problem Statement. ](#data)
-   [ Questions. ](#questions)
 3. [ Metrics. ](#metrics)
 4. [ Data Exploration and visualization. ](#viz)
 5. [ Methodology. ](#methodology)
@@ -127,18 +126,6 @@ acc_decision_tree = round(clf.score(X_train, y_train) * 100, 2)
 print (acc_decision_tree)
 ```
 
-A table ranking the models applied to the data according to the scores they produced.
-We can see that Decision Tree and Random Forest classfiers have the highest accuracy score. This similarity makes sense as random forests are an example of an ensemble learner built on decision trees.
-
-Among these two, the Random Forest classifier is a better choice as it has the ability to limit overfitting when compared to the Decision Tree classifier.
-
-![Model Scores](model_scores.png)
-
-----
-Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier. It's confusion matrix is shown below.
-
-![Confusion matrix](confusion_matrix.png)
-
 
 <a name="methodology"></a>
 ## 5. Methodology
@@ -212,6 +199,21 @@ print (acc_linear_svc)
 
 <a name="results"></a>
 ## 6. Results
+### Model Evaluation and Validation
+A table ranking the models applied to the data according to the scores they produced.
+We can see that Decision Tree and Random Forest classfiers have the highest accuracy score. This similarity makes sense as random forests are an example of an ensemble learner built on decision trees.
+
+Between these two, the Random Forest classifier is a better choice as it has the ability to limit overfitting when compared to the Decision Tree classifier.
+
+![Model Scores](model_scores.png)
+
+----
+Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier. It's confusion matrix is shown below.
+
+![Confusion matrix](confusion_matrix.png)
+
+### Justification
+The Random Forest classfier works best in predicting chronic kidney disease here as it belongs to the family of ensemble methods which help improve machine learning results by combining multiple models. Using ensemble methods produces better predictions compared to a single model, hence they have a history of placing first in many prestigious machine learning competitions on Kaggle.
 
 
 <a name="conclusion"></a>
