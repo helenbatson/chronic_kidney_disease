@@ -13,21 +13,31 @@ Table of Contents
 8. [ Licensing, Authors, Acknowledgements. ](#ack)
 
 
+
+<a name="intro"></a>
+## 1. Project Overview
 This article is for my Udacity Data Science Nanodegree capstone project and uses a dataset on chronic kidney disease from [Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease. Predictions have been made on patients' kidney data to determine whether there are any clear indications of chronic kidney disease.
 
 ![A picture depiction of kidney disease. Credit: favpng.com](kidney_failure.png)
 
-<a name="intro"></a>
-## 1. Project Overview
-A few years ago during pregnancy I was placed in the high risk group due to raised blood pressure (gestational hypertension). Ten days after birth my blood pressure rose even higher and it was determined to be preeclampsia; pronounced [pree·uh·klamp·see·uh]. Left untreated preeclampsia can lead to organ failure; in particular to the liver and kidneys.
-
-This data science project will be to investigate kidney data (described in the Kaggle link above) to predict whether or not a patient has chronic kidney disease. The expectation is that the results of this project could be used to benefit people who have had their blood taken in hospital; features of their blood could be used in a model to identify chronic kidney disease which may not have been previously picked up. If I knew my equivalent data I could predict my likelihood of having this disease since having preeclampsia.
-
-A few models will be tried, starting with logistic regression since it is used to explain the relationship between one dependent binary variable (disease present or not) and one or more nominal, ordinal, interval or ratio-level independent variables. The metrics used to measure the performance of the models will be predictions on the test data, score/classification accuracy, and confusion matrices.
-
 
 <a name="data"></a>
 ## 2. Problem Statement
+A few years ago during pregnancy I was placed in the high risk group due to raised blood pressure (gestational hypertension). Ten days after birth my blood pressure rose even higher and it was determined to be preeclampsia; pronounced [pree·uh·klamp·see·uh]. Left untreated preeclampsia can lead to organ failure; in particular to the liver and kidneys.
+
+This data science project will be to investigate kidney data (described in the Kaggle link above) to predict whether or not a patient has chronic kidney disease. The expectation is that the results of this project could be used to benefit people who have had their blood taken in hospital; features of their blood could be used in a model to identify chronic kidney disease which may not have been previously picked up. If I knew my equivalent data I could predict my likelihood of having this disease since having preeclampsia years ago.
+
+<a name="questions"></a>
+## Questions to be answered
+1. Can we predict chronic kidney disease from the features in the dataset?
+1. Which features are key to the predictions?
+1. Which is the best model to use and why?
+
+
+<a name="metrics"></a>
+## 3. Metrics.
+A few models will be tried, starting with logistic regression since it is used to explain the relationship between one dependent binary variable (disease present or not) and one or more nominal, ordinal, interval or ratio-level independent variables. The metrics used to measure the performance of the models will be predictions on the test data, score/classification accuracy, and confusion matrices.
+
 The data has been prepared into train and test files and a set of data models have been used in the predictions after a series of feature engineering steps.
 
 The columns and their descriptions are as follows:
@@ -58,20 +68,12 @@ The columns and their descriptions are as follows:
 1. ane - anemia Anemia(nominal) - (yes,no)
 1. Our target: class - Class (nominal)- class - (ckd,notckd)
 
-<a name="questions"></a>
-## Questions to be answered
-1. Can we predict chronic kidney disease from the features in the dataset?
-1. Which features are key to the predictions?
-1. Which is the best model to use and why?
-
-<a name="metrics"></a>
-## 3. Metrics.
-### How To Interact With The Project
-Install Jupyter notebook and open the .ipynb file to run the cells within it.
-After feature engineering the following models were applied and the resulting accuracy/scores and confusion matrices calculated.
 
 <a name="viz"></a>
 ## 4. Data Exploration and visualization.
+### How To Interact With The Project
+Install Jupyter notebook and open the .ipynb file to run the cells within it.
+After feature engineering the following models were applied and the resulting accuracy/scores and confusion matrices calculated.
 
 ### File Descriptions
 1. CKD Prediction.ipynb: Jupyter notebook with a step-by-step analysis of kidney data to predict chronic kidney disease.
