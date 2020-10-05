@@ -58,9 +58,9 @@ The columns and their descriptions are as follows:
 
 <a name="questions"></a>
 ## 3. Questions
-Can we predict chronic kidney disease from the features in the dataset?
-Which features are key to the predictions?
-Which is the best model to use and why?
+1. Can we predict chronic kidney disease from the features in the dataset?
+1. Which features are key to the predictions?
+1. Which is the best model to use and why?
 
 <a name="findings"></a>
 ## 4. Findings
@@ -109,6 +109,22 @@ They successfully made predictions.
 - Decision Tree
 - Random Forest
 - Naive Bayes
+
+The best of the six were coded as:
+```
+clf = RandomForestClassifier(n_estimators=100)
+clf.fit(X_train, y_train)
+y_pred_random_forest = clf.predict(X_test)
+acc_random_forest = round(clf.score(X_train, y_train) * 100, 2)
+print (acc_random_forest)
+```
+```
+clf = DecisionTreeClassifier()
+clf.fit(X_train, y_train)
+y_pred_decision_tree = clf.predict(X_test)
+acc_decision_tree = round(clf.score(X_train, y_train) * 100, 2)
+print (acc_decision_tree)
+```
 
 
 <a name="conclusion"></a>
