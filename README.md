@@ -117,8 +117,8 @@ clf.fit(X_train, y_train)
 y_pred_random_forest = clf.predict(X_test)
 acc_random_forest = round(clf.score(X_train, y_train) * 100, 2)
 print (acc_random_forest)
-```
-```
+
+
 clf = DecisionTreeClassifier()
 clf.fit(X_train, y_train)
 y_pred_decision_tree = clf.predict(X_test)
@@ -138,15 +138,32 @@ Initially the target data is skewed toward having chronic kidney disease, 174:10
 1. Remove outliers from non-categorical columns: An assumption of binary logistic regression is there should be no outliers in the data so they were identified using the Tukey rule.
 
 ```
-The Tukey rule finds outliers in one-dimension. The steps are:
+def find_outliers(col):
+    """
+    Identify the outliers of each column of a dataframe using the Tukey rule
 
-* Find the first quartile (ie .25 quantile)
-* Find the third quartile (ie .75 quantile)
-* Calculate the inter-quartile range (Q3 - Q1)
-* Any value that is greater than Q3 + 1.5 * IQR is an outlier
-* Any value that is less than Qe - 1.5 * IQR is an outlier
+    :return: A dataframe of the outliers for each column
+    """
+    # Calculate the first quartile
+    Q1 = df[col].quantile(.25)
+
+    # Calculate the third quartile
+    Q3 = df[col].quantile(.75)
+
+    # Calculate the interquartile range Q3 - Q1
+    IQR = Q3 - Q1
+    IQR
+
+    # Calculate the maximum value and minimum values according to the Tukey rule
+    # max_value is Q3 + 1.5 * IQR while min_value is Q1 - 1.5 * IQR
+
+    max_value = Q3 + 1.5 * IQR
+    min_value = Q1 - 1.5 * IQR
+
+    # Filter the training data for values that are greater than max_value or less than min_value
+    outliers = df[(df[col] > max_value) | (df[col] < min_value)]
+    return outliers
 ```
-
 1. Using a dataframe with the outliers removed, apply logistic regression and check for class balancing again so there is no chance of one classification being chosen over the other. This time the classes were balanced slightly in favour of not having chronic kidney disease: 79:74
 
 
@@ -218,6 +235,9 @@ The Random Forest classfier works best in predicting chronic kidney disease here
 
 <a name="conclusion"></a>
 ## 7. Conclusion
+### Real-world context
+When a woman who has had preeclampsia presents herself to medical staff after pregnancy and she has her blood drawn due to symptoms related to preeclampsia/eclampsia, the features used in this dataset can be taken from her blood and used to determine whether or not she has chronic kidney disease.
+
 Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier.
 The feature most correlated to this prediction is serum creatinine, which makes sense as healthy kidneys are known to filter creatinine and other waste products from our blood.
 
