@@ -167,7 +167,7 @@ Logistic regression makes a great baseline algorithm so this was the starting po
 
 Logistic regression is probably the most important supervised learning classification method. It’s fast, due to it's relationship to the generalized linear model, and it works well when the relationship between the features and the target are not too complex. It's documented on the [scikit learn page](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
 
-The starting code was:
+The first working pipeline:
 ```
 pipeline = Pipeline([
     ('clf', LogisticRegression())
