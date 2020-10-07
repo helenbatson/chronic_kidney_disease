@@ -164,10 +164,7 @@ def find_outliers(col):
     outliers = df[(df[col] > max_value) | (df[col] < min_value)]
     return outliers
 ```
-1. Using a dataframe with the outliers removed, apply logistic regression and check for class balancing again so there is no chance of one classification being chosen over the other. This time the classes were balanced slightly in favour of not having chronic kidney disease: 79:74
-
-
-### Implementation
+1. Using a dataframe with the outliers removed, apply logistic regression and check for class balancing again so there is no chance of one classification being chosen over the other. After using the Tukey rule the classes were balanced slightly more in favour of not having chronic kidney disease: 79:74.
 
 ##### Libraries:
 1. numpy
@@ -175,7 +172,87 @@ def find_outliers(col):
 1. matplotlib
 1. seaborn
 1. sklearn
+
 Each model was coded in a similar way; keeping them simple was the main idea to keep the running time down.
+
+### Choice of models
+The prediction of disease versus no disease is a classification problem since it has a discrete outcome, so this type of model was investigated for a solution.
+
+Each set of model parameters was tuned using a grid search, and the random state was set for reproducibility.
+
+#### Logistic Regression: 98.69 percent
+Logistic regression makes a great baseline algorithm so this was the starting point in the models. The assumptions made in the feature engineering suit this algorithm. For instance, the dependent variable should be dichotomous in nature (present/absent). In binary logistic regression there should be no outliers in the data. There should also be no high correlations among the predictors.
+
+Logistic regression is probably the most important supervised learning classification method. It’s fast, due to it's relationship to the generalized linear model, and it works well when the relationship between the features and the target are not too complex.
+
+The starting code was: 
+```
+pipeline = Pipeline([
+    ('clf', LogisticRegression())
+])
+
+parameters = {
+    'clf__max_iter': [3000, 4000],
+    'clf__fit_intercept': [True, False],
+    'clf__penalty': ['l2'],
+    'clf__n_jobs': [1,5,8,10],
+    'clf__C': [1,5,8],
+    'clf__random_state': [34]
+}
+
+cv = GridSearchCV(pipeline, param_grid=parameters)
+
+cv.fit(X_train, y_train)
+y_pred = cv.predict(X_test)
+
+acc_log_reg = round( clf.score(X_train, y_train) * 100, 2)
+print (str(acc_log_reg) + ' percent')
+```
+
+The best parameters were found to be:
+```cv.best_params_```
+{'clf__C': [0.5],
+ 'clf__fit_intercept': False,
+ 'clf__max_iter': 3000,
+ 'clf__n_jobs': 1,
+ 'clf__penalty': 'l2',
+ 'clf__random_state': 34}
+
+These parameters were tuned because of their impact on regularization. We ... 
+After running the model with the default max_iter': 100, convergence warnings led to it being increased and the accuracy in turn improved.
+```ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+```
+clf__max_iter refers to the maximum number of iterations taken for the solvers (e.g. Liblinear mentioned in the warning) to converge. Increasing clf__max_iter to the 1000s had the greatest impact on accuracy and this turned into the main focus for optimization.
+
+#### Support Vector Machine
+what parameters were tuned
+what range of values was chosen for tuning
+why
+
+#### Linear SVC
+what parameters were tuned
+what range of values was chosen for tuning
+why
+
+#### Decision Tree
+what parameters were tuned
+what range of values was chosen for tuning
+why
+
+#### Random Forest
+what parameters were tuned
+what range of values was chosen for tuning
+why
+
+#### Naive Bayes
+what parameters were tuned
+what range of values was chosen for tuning
+why
+
+
+
+
 
 These were the best performing models:
 ```
@@ -194,15 +271,33 @@ print (acc_decision_tree)
 ```
 
 ### Refinement
+Please add a discussion of how you improved upon your model and please provide both solutions before improvement and after improvements
+
+
 THe logistic regression model was refined to max_iter=5000 due to convergence issues using the default of 1000. At 5000 iterations the score got to 98.69.
 
+Adding more parameters did not improve on the model's accuracy. Instead of using the parameters
+
 ```
-clf = LogisticRegression(max_iter=5000)
-clf.fit(X_train, y_train)
-y_pred_log_reg = clf.predict(X_test)
-acc_log_reg = round( clf.score(X_train, y_train) * 100, 2)
-print (str(acc_log_reg) + ' percent')
+parameters = {
+    'clf__max_iter': [3000, 4000],
+    'clf__fit_intercept': [True, False],
+    'clf__penalty': ['l2'],
+    'clf__n_jobs': [1,5,8,10],
+    'clf__C': [1,5,8],
+    'clf__random_state': [34]
+}
 ```
+the following could be used for the same result:
+
+```
+parameters = {
+    'clf__max_iter': [3000],
+    'clf__random_state': [34]
+}
+```
+
+
 
 The Linear SVM model was also refined from max_iter=1000, though convergence was not achieved even at max_iter=400000. The score reached 85.62 but this was the most time intensive of all models at 4.0s.
 
