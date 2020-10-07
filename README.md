@@ -221,8 +221,9 @@ The best parameters were found to be:
 These parameters were tuned because of their impact on regularization. We want to improve the generalization performance; to penalize complexity.
 
 After running the model with the default max_iter': 100, convergence warnings led to it being increased, and the accuracy in turn improved.
-```ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
-  "the number of iterations.", ConvergenceWarning)
+```
+ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
+"the number of iterations.", ConvergenceWarning)
 ```
 clf__max_iter refers to the maximum number of iterations taken for the solvers (e.g. Liblinear mentioned in the warning) to converge. Increasing clf__max_iter to the 1000s had the greatest impact on accuracy and this turned into the main focus for optimization.
 
@@ -324,7 +325,7 @@ Best parameters:
 
 #### Random Forest: 100 percent
 The decision tree is the basic building block of a random forest.
-The random forest is better than a single decision tree because it pools predictions from multiple sources, thereby incorporating much more knowledge than from any one individual.
+The random forest is better than a single decision tree because it pools predictions from multiple sources, thereby incorporating much more knowledge than from any one individual. (Described on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
 
 ```
 pipeline = Pipeline([
@@ -332,9 +333,7 @@ pipeline = Pipeline([
     ('clf', RandomForestClassifier())
 ])
 
-parameters = {
-    'clf__random_state': [34]
-}
+parameters = {}
 
 cv = GridSearchCV(pipeline, param_grid=parameters)
 
@@ -344,8 +343,8 @@ y_pred_random_forest = cv.predict(X_test)
 
 
 #### Gaussian Naive Bayes: 95.42 percent
-Naive Bayes classifiers applying Bayes' theorem with strong independence assumptions between the features.
-The Gaussian Naive Bayes algorithm assumes a Gaussian (normal) distribution, and takes just two parameters:
+Naive Bayes classifiers apply Bayes' theorem with strong independence assumptions between the features.
+The Gaussian Naive Bayes algorithm (described on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html assumes a Gaussian (normal) distribution, and takes just two parameters:
 clf__priors parameter to specify weighted probabilities for classes and clf__var_smoothing (categorical variable smoothing).
 
 ```
