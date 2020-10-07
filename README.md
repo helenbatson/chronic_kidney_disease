@@ -99,9 +99,9 @@ This makes sense as healthy kidneys are known to filter creatinine and other was
 
 ----
 
-### Building the models
+### The Models
 
-A few models were tried to check for the best model to predict chronic kidney disease.
+Classification models were tried to check for the best model to predict chronic kidney disease since the prediction of disease versus no disease has a discrete outcome.
 
 - Logistic Regression
 - Support Vector Machines
@@ -110,29 +110,11 @@ A few models were tried to check for the best model to predict chronic kidney di
 - Random Forest
 - Naive Bayes
 
-They successfully made predictions. The best of the six were coded as:
-```
-clf = RandomForestClassifier(n_estimators=100)
-clf.fit(X_train, y_train)
-y_pred_random_forest = clf.predict(X_test)
-acc_random_forest = round(clf.score(X_train, y_train) * 100, 2)
-print (acc_random_forest)
-
-
-clf = DecisionTreeClassifier()
-clf.fit(X_train, y_train)
-y_pred_decision_tree = clf.predict(X_test)
-acc_decision_tree = round(clf.score(X_train, y_train) * 100, 2)
-print (acc_decision_tree)
-```
-
 
 <a name="methodology"></a>
 ## 5. Methodology
 ### Data Preprocessing
-1.Check whether the target data is balanced
-i.e. Does the patient have chronic kidney disease or not?
-Initially the target data is skewed toward having chronic kidney disease, 174:106, so some steps were taken to balance it.
+1.Check whether the target data is balanced; i.e. does the patient have chronic kidney disease or not? Initially the target data is skewed toward having chronic kidney disease, 174:106, so some steps were taken to balance it.
 1. Fill Yes/No columns with boolean values.
 1. Imputing data: Fill the null values with the median value of each column. We didn't want to lose features like red_blood_cells which was missing 107 out of 280 values, and since the object-type columns were filled with boolean values, the median of each feature column was used instead of the mean.
 1. Remove outliers from non-categorical columns: An assumption of binary logistic regression is there should be no outliers in the data so they were identified using the Tukey rule.
@@ -210,7 +192,10 @@ print (str(acc_log_reg) + ' percent')
 ```
 
 The best parameters were found to be:
-```cv.best_params_```
+```
+cv.best_params_
+```
+
 {'clf__C': [0.5],
  'clf__fit_intercept': False,
  'clf__max_iter': 3000,
@@ -221,10 +206,12 @@ The best parameters were found to be:
 These parameters were tuned because of their impact on regularization. We want to improve the generalization performance; to penalize complexity.
 
 After running the model with the default max_iter': 100, convergence warnings led to it being increased, and the accuracy in turn improved.
+
 ```
 ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
 "the number of iterations.", ConvergenceWarning)
 ```
+
 clf__max_iter refers to the maximum number of iterations taken for the solvers (e.g. Liblinear mentioned in the warning) to converge. Increasing clf__max_iter to the 1000s had the greatest impact on accuracy and this turned into the main focus for optimization.
 
 #### Support Vector Machine: 100 percent
@@ -250,7 +237,10 @@ y_pred_svc = cv.predict(X_test)
 ```
 
 Best parameters:
-```cv.best_params_```
+```
+cv.best_params_
+```
+
 {'clf__C': 1.0, 'clf__random_state': 34}
 This means that the default parameters worked perfectly!
 The StandardScaler was used to normalize the training data so that the problem became more conditioned, i.e. transformed the data so its distribution had a mean value 0 and standard deviation of 1; in turn speeding up the convergence. If one feature’s variance is many orders of magnitude more than the variance of other features, that feature would dominate other features in the dataset. The model would not handle this imbalance as we'd need.
@@ -281,7 +271,10 @@ y_pred_lsvm = cv.predict(X_test)
 ```
 
 The best parameters
-```cv.best_params_```
+```
+cv.best_params_
+```
+
 {'clf__C': 0.1, 'clf__random_state': 34}
 
 
@@ -315,7 +308,10 @@ y_pred_decision_tree = cv.predict(X_test)
 ```
 
 Best parameters:
-```cv.best_params_```
+```
+cv.best_params_
+```
+
 {'clf__criterion': 'gini',
  'clf__max_depth': 8,
  'clf__max_features': 'auto',
@@ -364,7 +360,10 @@ y_pred_gnb = cv.predict(X_test)
 ```
 
 Best parameters
-```cv.best_params_```
+```
+cv.best_params_
+```
+
 {'clf__priors': None, 'clf__var_smoothing': 1e-08}
 
 
@@ -393,6 +392,7 @@ parameters = {
     'clf__random_state': [34]
 }
 ```
+
 Hence the runtime was improved.
 
 
