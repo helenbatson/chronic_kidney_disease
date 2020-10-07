@@ -15,7 +15,7 @@ Table of Contents
 
 <a name="intro"></a>
 ## 1. Project Overview
-This article is for my Udacity Data Science Nanodegree capstone project and uses a dataset on chronic kidney disease from [Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease. Predictions have been made on patients' kidney data to determine whether there are any clear indications of chronic kidney disease.
+This article is for my Udacity Data Science Nanodegree capstone project and uses a dataset on chronic kidney disease from [Kaggle](https://www.kaggle.com/colearninglounge/chronic-kidney-disease). Predictions have been made on patients' kidney data to determine whether there are any clear indications of chronic kidney disease.
 
 ![A picture depiction of kidney disease. Credit: favpng.com](kidney_failure.png)
 
@@ -183,7 +183,7 @@ Each set of model parameters was tuned using a grid search, and where possible t
 #### Logistic Regression: 98.69 percent
 Logistic regression makes a great baseline algorithm so this was the starting point in the models. The assumptions made in the feature engineering suit this algorithm. For instance, the dependent variable should be dichotomous in nature (present/absent). In binary logistic regression there should be no outliers in the data. There should also be no high correlations among the predictors.
 
-Logistic regression is probably the most important supervised learning classification method. It’s fast, due to it's relationship to the generalized linear model, and it works well when the relationship between the features and the target are not too complex. It's documented on the [scikit learn page]https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html.
+Logistic regression is probably the most important supervised learning classification method. It’s fast, due to it's relationship to the generalized linear model, and it works well when the relationship between the features and the target are not too complex. It's documented on the [scikit learn page](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
 
 The starting code was:
 ```
@@ -228,7 +228,7 @@ ConvergenceWarning: Liblinear failed to converge, increase the number of iterati
 clf__max_iter refers to the maximum number of iterations taken for the solvers (e.g. Liblinear mentioned in the warning) to converge. Increasing clf__max_iter to the 1000s had the greatest impact on accuracy and this turned into the main focus for optimization.
 
 #### Support Vector Machine: 100 percent
-This is a supervised machine learning algorithm (described on [scikit-learn]https://scikit-learn.org/stable/modules/svm.html) where each data item can be plotted as a point in n-dimensional space (where n is the number of features in the data frame), and the value of each feature is the value of each coordinate. Classification is completed by finding the hyper-plane that differentiates the two classes very well.
+This is a supervised machine learning algorithm (described on [scikit-learn](https://scikit-learn.org/stable/modules/svm.html)) where each data item can be plotted as a point in n-dimensional space (where n is the number of features in the data frame), and the value of each feature is the value of each coordinate. Classification is completed by finding the hyper-plane that differentiates the two classes very well.
 
 The parameters tuned were identified as important as they have the highest impact on this model's performance: “kernel”, “gamma” and “C”.
 
@@ -257,7 +257,7 @@ The StandardScaler was used to normalize the training data so that the problem b
 
 #### Linear SVM: 100 percent
 Linear SVM is an SVM model with a linear kernel.
-LinearSVC stands for Linear Support Vector Classification, and is another (faster) implementation of Support Vector Classification for the case of a linear kernel. More details can be found on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html.
+LinearSVC stands for Linear Support Vector Classification, and is another (faster) implementation of Support Vector Classification for the case of a linear kernel. More details can be found on [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html).
 
 The StandardScaler was used here again, as discussed in the SVM section above.
 
@@ -287,7 +287,7 @@ The best parameters
 
 #### Decision Tree: 99.35 percent
 Put simply, this model is based on a flowchart-like tree structure where decisions are made at each node of the tree.
-It is explained on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html?highlight=decision%20tree#sklearn.tree.DecisionTreeClassifier.
+It is explained on [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html).
 
 The parameters chosen were based on creating a model where each feature is classified correctly for each patient, which is better than randomly choosing the classification.
 
@@ -325,7 +325,7 @@ Best parameters:
 
 #### Random Forest: 100 percent
 The decision tree is the basic building block of a random forest.
-The random forest is better than a single decision tree because it pools predictions from multiple sources, thereby incorporating much more knowledge than from any one individual. (Described on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+The random forest is better than a single decision tree because it pools predictions from multiple sources, thereby incorporating much more knowledge than from any one individual. (Described on [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html))
 
 ```
 pipeline = Pipeline([
@@ -344,7 +344,7 @@ y_pred_random_forest = cv.predict(X_test)
 
 #### Gaussian Naive Bayes: 95.42 percent
 Naive Bayes classifiers apply Bayes' theorem with strong independence assumptions between the features.
-The Gaussian Naive Bayes algorithm (described on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html assumes a Gaussian (normal) distribution, and takes just two parameters:
+The Gaussian Naive Bayes algorithm (described on [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html)) assumes a Gaussian (normal) distribution, and takes just two parameters:
 clf__priors parameter to specify weighted probabilities for classes and clf__var_smoothing (categorical variable smoothing).
 
 ```
@@ -397,21 +397,18 @@ Hence the runtime was improved.
 
 
 The Linear SVM model was also improved significantly from  51.63 to 100 percent when the standard scaler was added to the pipeline.
-The StandardScaler was used to normalize the training data so that no feature would dominate other features in the dataset. The model would not handle this imbalance as we would require.
-
-```
-clf = LinearSVC(max_iter=400000)
-clf.fit(X_train, y_train)
-y_pred_linear_svc = clf.predict(X_test)
-acc_linear_svc = round(clf.score(X_train, y_train) * 100, 2)
-print (acc_linear_svc)
-```
+The StandardScaler was used to normalize the training data so that no feature would dominate other features in the dataset. The model would not handle this imbalance as we would require, hence the big jump in accuracy.
 
 ```
 pipeline = Pipeline([
-    ('standardscaler', StandardScaler()),
-    ('clf', SVC())
+    ('scaler', StandardScaler()),
+    ('clf', LinearSVC())
 ])
+
+parameters = {
+    'clf__C': [0.1, 0.5, 1.0],
+    'clf__random_state': [34]
+}
 ```
 
 Both the Decision Tree and Random Forest classifier improved from 99.35 to 100 perecent by resorting to the default values.
@@ -486,6 +483,6 @@ There was not much open data found for kidney disease, but if it was found in ab
 <a name="ack"></a>
 ## 7. Licensing, Authors, Acknowledgements
 
-The data files were retrieved from[Kaggle]https://www.kaggle.com/colearninglounge/chronic-kidney-disease, via https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease.
+The data files were retrieved from [Kaggle](https://www.kaggle.com/colearninglounge/chronic-kidney-disease), via [UCI](https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease).
 
-Thanks to [Udacity]https://www.udacity.com/ for supporting this project.
+Thanks to [Udacity](https://www.udacity.com/) for supporting this project.
