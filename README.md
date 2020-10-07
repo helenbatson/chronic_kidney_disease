@@ -178,14 +178,14 @@ Each model was coded in a similar way; keeping them simple was the main idea to 
 ### Choice of models
 The prediction of disease versus no disease is a classification problem since it has a discrete outcome, so this type of model was investigated for a solution.
 
-Each set of model parameters was tuned using a grid search, and the random state was set for reproducibility.
+Each set of model parameters was tuned using a grid search, and where possible the random state was set for reproducibility.
 
 #### Logistic Regression: 98.69 percent
 Logistic regression makes a great baseline algorithm so this was the starting point in the models. The assumptions made in the feature engineering suit this algorithm. For instance, the dependent variable should be dichotomous in nature (present/absent). In binary logistic regression there should be no outliers in the data. There should also be no high correlations among the predictors.
 
-Logistic regression is probably the most important supervised learning classification method. It’s fast, due to it's relationship to the generalized linear model, and it works well when the relationship between the features and the target are not too complex.
+Logistic regression is probably the most important supervised learning classification method. It’s fast, due to it's relationship to the generalized linear model, and it works well when the relationship between the features and the target are not too complex. It's documented on the [scikit learn page]https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html.
 
-The starting code was: 
+The starting code was:
 ```
 pipeline = Pipeline([
     ('clf', LogisticRegression())
@@ -218,64 +218,162 @@ The best parameters were found to be:
  'clf__penalty': 'l2',
  'clf__random_state': 34}
 
-These parameters were tuned because of their impact on regularization. We ... 
-After running the model with the default max_iter': 100, convergence warnings led to it being increased and the accuracy in turn improved.
+These parameters were tuned because of their impact on regularization. We want to improve the generalization performance; to penalize complexity.
+
+After running the model with the default max_iter': 100, convergence warnings led to it being increased, and the accuracy in turn improved.
 ```ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
   "the number of iterations.", ConvergenceWarning)
 ```
 clf__max_iter refers to the maximum number of iterations taken for the solvers (e.g. Liblinear mentioned in the warning) to converge. Increasing clf__max_iter to the 1000s had the greatest impact on accuracy and this turned into the main focus for optimization.
 
-#### Support Vector Machine
-what parameters were tuned
-what range of values was chosen for tuning
-why
+#### Support Vector Machine: 100 percent
+This is a supervised machine learning algorithm (described on [scikit-learn]https://scikit-learn.org/stable/modules/svm.html) where each data item can be plotted as a point in n-dimensional space (where n is the number of features in the data frame), and the value of each feature is the value of each coordinate. Classification is completed by finding the hyper-plane that differentiates the two classes very well.
 
-#### Linear SVC
-what parameters were tuned
-what range of values was chosen for tuning
-why
+The parameters tuned were identified as important as they have the highest impact on this model's performance: “kernel”, “gamma” and “C”.
 
-#### Decision Tree
-what parameters were tuned
-what range of values was chosen for tuning
-why
-
-#### Random Forest
-what parameters were tuned
-what range of values was chosen for tuning
-why
-
-#### Naive Bayes
-what parameters were tuned
-what range of values was chosen for tuning
-why
-
-
-
-
-
-These were the best performing models:
 ```
-clf = RandomForestClassifier(n_estimators=100)
-clf.fit(X_train, y_train)
-y_pred_random_forest = clf.predict(X_test)
-acc_random_forest = round(clf.score(X_train, y_train) * 100, 2)
-print (acc_random_forest)
+pipeline = Pipeline([
+    ('standardscaler', StandardScaler()),
+    ('clf', SVC())
+])
+
+parameters = {
+    'clf__C': [0.1, 0.5, 1.0],
+    'clf__random_state': [34]
+}
+
+cv = GridSearchCV(pipeline, param_grid=parameters)
+
+cv.fit(X_train, y_train)
+y_pred_svc = cv.predict(X_test)
 ```
+
+Best parameters:
+```cv.best_params_```
+{'clf__C': 1.0, 'clf__random_state': 34}
+This means that the default parameters worked perfectly!
+The StandardScaler was used to normalize the training data so that the problem became more conditioned, i.e. transformed the data so its distribution had a mean value 0 and standard deviation of 1; in turn speeding up the convergence. If one feature’s variance is many orders of magnitude more than the variance of other features, that feature would dominate other features in the dataset. The model would not handle this imbalance as we'd need.
+
+#### Linear SVM: 100 percent
+Linear SVM is an SVM model with a linear kernel.
+LinearSVC stands for Linear Support Vector Classification, and is another (faster) implementation of Support Vector Classification for the case of a linear kernel. More details can be found on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html.
+
+The StandardScaler was used here again, as discussed in the SVM section above.
+
+Again here the regularization parameter C was found to help with the accuracy. A gridsearch was used as follows:
+
 ```
-clf = DecisionTreeClassifier()
-clf.fit(X_train, y_train)
-y_pred_decision_tree = clf.predict(X_test)
-acc_decision_tree = round(clf.score(X_train, y_train) * 100, 2)
-print (acc_decision_tree)
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('clf', LinearSVC())
+])
+
+parameters = {
+    'clf__C': [0.1, 0.5, 1.0],
+    'clf__random_state': [34]
+}
+
+cv = GridSearchCV(pipeline, param_grid=parameters)
+
+cv.fit(X_train, y_train)
+y_pred_lsvm = cv.predict(X_test)
 ```
+
+The best parameters
+```cv.best_params_```
+{'clf__C': 0.1, 'clf__random_state': 34}
+
+
+#### Decision Tree: 99.35 percent
+Put simply, this model is based on a flowchart-like tree structure where decisions are made at each node of the tree.
+It is explained on [scikit-learn]https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html?highlight=decision%20tree#sklearn.tree.DecisionTreeClassifier.
+
+The parameters chosen were based on creating a model where each feature is classified correctly for each patient, which is better than randomly choosing the classification.
+
+The min_samples_split is for regularizing the tree, the default is 2 so values were chosen under 10 to ensure the best value was used.
+The max_depth parameter is one of the ways in which we can regularize the tree, or limit the way it grows to prevent over-fitting.
+
+Pipeline
+```
+pipeline = Pipeline([
+    ('clf', DecisionTreeClassifier())
+])
+
+parameters = {
+    'clf__criterion': ['gini', 'entropy'],
+    'clf__max_depth': [1, 3, 5, 8, 10],
+    'clf__min_samples_split': [2, 3, 5, 8, 10],
+    'clf__max_features': ['auto', 'sqrt', 'log2'],
+    'clf__random_state': [34]
+}
+
+cv = GridSearchCV(pipeline, param_grid=parameters)
+
+cv.fit(X_train, y_train)
+y_pred_decision_tree = cv.predict(X_test)
+```
+
+Best parameters:
+```cv.best_params_```
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 8,
+ 'clf__max_features': 'auto',
+ 'clf__min_samples_split': 5,
+ 'clf__random_state': 34}
+
+
+#### Random Forest: 100 percent
+The decision tree is the basic building block of a random forest.
+The random forest is better than a single decision tree because it pools predictions from multiple sources, thereby incorporating much more knowledge than from any one individual.
+
+```
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('clf', RandomForestClassifier())
+])
+
+parameters = {
+    'clf__random_state': [34]
+}
+
+cv = GridSearchCV(pipeline, param_grid=parameters)
+
+cv.fit(X_train, y_train)
+y_pred_random_forest = cv.predict(X_test)
+```
+
+
+#### Gaussian Naive Bayes: 95.42 percent
+Naive Bayes classifiers applying Bayes' theorem with strong independence assumptions between the features.
+The Gaussian Naive Bayes algorithm assumes a Gaussian (normal) distribution, and takes just two parameters:
+clf__priors parameter to specify weighted probabilities for classes and clf__var_smoothing (categorical variable smoothing).
+
+```
+pipeline = Pipeline([
+    ('clf', GaussianNB())
+])
+
+parameters = {
+    'clf__priors': [None],
+    'clf__var_smoothing': [0.00000001, 0.000000001, 0.00000001]
+}
+
+cv = GridSearchCV(pipeline, param_grid=parameters)
+
+cv.fit(X_train, y_train)
+y_pred_gnb = cv.predict(X_test)
+```
+
+Best parameters
+```cv.best_params_```
+{'clf__priors': None, 'clf__var_smoothing': 1e-08}
+
+
 
 ### Refinement
-Please add a discussion of how you improved upon your model and please provide both solutions before improvement and after improvements
+The following section explains the improvements made to some of the models.
 
-
-THe logistic regression model was refined to max_iter=5000 due to convergence issues using the default of 1000. At 5000 iterations the score got to 98.69.
-
+The logistic regression model was refined by removing most of the parameters from the grid search.
 Adding more parameters did not improve on the model's accuracy. Instead of using the parameters
 
 ```
@@ -296,10 +394,11 @@ parameters = {
     'clf__random_state': [34]
 }
 ```
+Hence the runtime was improved.
 
 
-
-The Linear SVM model was also refined from max_iter=1000, though convergence was not achieved even at max_iter=400000. The score reached 85.62 but this was the most time intensive of all models at 4.0s.
+The Linear SVM model was also improved significantly from  51.63 to 100 percent when the standard scaler was added to the pipeline.
+The StandardScaler was used to normalize the training data so that no feature would dominate other features in the dataset. The model would not handle this imbalance as we would require.
 
 ```
 clf = LinearSVC(max_iter=400000)
@@ -309,10 +408,49 @@ acc_linear_svc = round(clf.score(X_train, y_train) * 100, 2)
 print (acc_linear_svc)
 ```
 
+```
+pipeline = Pipeline([
+    ('standardscaler', StandardScaler()),
+    ('clf', SVC())
+])
+```
+
+Both the Decision Tree and Random Forest classifier improved from 99.35 to 100 perecent by resorting to the default values.
+
+Decision Tree
+```
+parameters = {'clf__criterion': 'gini',
+ 'clf__max_depth': 8,
+ 'clf__max_features': 'auto',
+ 'clf__min_samples_split': 5,
+ 'clf__random_state': 34}
+ ```
+ 
+Default: 
+parameters = {}
+
+Random Forest
+```
+parameters = {
+    'clf__n_estimators': [50, 100, 200],
+    'clf__criterion': ['gini', 'entropy'],
+    'clf__max_depth': [1, 3, 5, 8, 10],
+    'clf__min_samples_split': [2, 3, 5, 8, 10],
+    'clf__max_features': ['auto', 'sqrt', 'log2'],
+    'clf__random_state': [34]
+}
+ ```
+
+Default: 
+parameters = {}
+
+
 <a name="results"></a>
 ## 6. Results
 ### Model Evaluation and Validation
-A table ranking the models applied to the data according to the scores they produced.
+In this investigation starting with the default values has worked out best in creating classification models to predict chronic kidney disease. Four out of six models reached 100% accuracy.
+
+Below is a table ranking the models applied to the data according to the scores they produced.
 We can see that Decision Tree and Random Forest classfiers have the highest accuracy score. This similarity makes sense as random forests are an example of an ensemble learner built on decision trees.
 
 Between these two, the Random Forest classifier is a better choice as it has the ability to limit overfitting when compared to the Decision Tree classifier.
@@ -320,12 +458,12 @@ Between these two, the Random Forest classifier is a better choice as it has the
 ![Model Scores](model_scores.png)
 
 ----
-Chronic kidney disease can be predicted 100% from the provided dataset using the Random Forest Classifier. It's confusion matrix is shown below.
+Chronic kidney disease can be predicted 100% from the provided dataset using the SVM, Random Forest, Linear SVC, and the Decision Tree classifiers. It's confusion matrix is shown below.
 
 ![Confusion matrix](confusion_matrix.png)
 
 ### Justification
-The Random Forest classfier works best in predicting chronic kidney disease here as it belongs to the family of ensemble methods which help improve machine learning results by combining multiple models. Using ensemble methods produces better predictions compared to a single model, hence they have a history of placing first in many prestigious machine learning competitions on Kaggle.
+At scale, with more data, the Random Forest classfier would be my first choice in predicting chronic kidney disease as it belongs to the family of ensemble methods which help improve machine learning results by combining multiple models. Using ensemble methods produces better predictions compared to a single model, hence they have a history of placing first in many prestigious machine learning competitions on Kaggle.
 
 
 <a name="conclusion"></a>
@@ -337,9 +475,9 @@ Chronic kidney disease can be predicted 100% from the provided dataset using the
 The feature most correlated to this prediction is serum creatinine, which makes sense as healthy kidneys are known to filter creatinine and other waste products from our blood.
 
 #### Reflections
-The Random Forest and Decision tree classifiers performed best in the group of models used to predict chronic kidney disease from patient data.
+The SVM, Random Forest, Linear SVC, and the Decision Tree classifiers performed best in the group of models used to predict chronic kidney disease from patient data.
 
-Removing the outliers needed some reflection as a few variables were categorical and it did not make sense to remove some of those categories. Some careful consideration was required and it paid off in the performance of the logistic regression. However in the end that was not the best model as I expected. The Random Forest classifier was best due to it's ability to limit overfitting.
+Removing the outliers needed some reflection as a few variables were categorical and it did not make sense to remove some of those categories. Some careful consideration was required for these variables and it paid off in the performance of the logistic regression. However, in the end, that was not the best model as it was expected to be. The Random Forest classifier was best due to it's ability to limit overfitting as an ensemble method.
 
 #### Improvements
 There was not much open data found for kidney disease, but if it was found in abundance then the chosen model may change due to considerations of performance time, and more parameters would be tested to ensure the performance was optimal.
